@@ -28,7 +28,7 @@ export const Header = () => {
                     <Loader className="h-5 w-5 text-muted-forground animate-spin" />
                 </ClerkLoading>
                 <ClerkLoaded>
-                    {/* <SignedIn>
+                    <SignedIn>
                         <UserButton
                             afterSignOutUrl="/"
                         />
@@ -43,9 +43,9 @@ export const Header = () => {
                                 Login
                             </Button>
                         </SignInButton>
-                    </SignedOut> */}
+                    </SignedOut>
 
-                    <div>
+                    {/* <div>
                         {!userId && (
                             <SignInButton
                                 mode="modal"
@@ -58,7 +58,7 @@ export const Header = () => {
                         <UserButton
                             afterSignOutUrl="/"
                         />
-                    </div>
+                    </div> */}
 
                 </ClerkLoaded>
             </div>
