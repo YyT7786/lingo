@@ -10,7 +10,7 @@ const LearnPage = () => {
             <StickyWrapper>
                 <UserProgress
                     activeCourse={{ title: "Spanish", imageSrc: "/es.svg" }}
-                    heart={5}
+                    hearts={5}
                     points={100}
                     hasActiveSubscription={false}
                 />
