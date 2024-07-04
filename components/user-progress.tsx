@@ -1,11 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-
-import { Button } from "./ui/button";
 import { InfinityIcon } from "lucide-react";
 
+import { Button } from "./ui/button";
+import { courses } from "@/db/schema";
+
 type Props = {
-    activeCourse: { title: string; imageSrc: string }; // TODO: Replace with DB types
+    activeCourse: typeof courses.$inferSelect;
     hearts: number;
     points: number;
     hasActiveSubscription: boolean;
