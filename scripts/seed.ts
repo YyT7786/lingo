@@ -111,6 +111,27 @@ const main = async () => {
                 order: 3,
                 question: 'Which one of these is the "the robot"?',
             },
+            {
+                id: 4,
+                lessonId: 2, // Verbs
+                type: "SELECT",
+                order: 1,
+                question: 'Which one of these is the "the man"?',
+            },
+            {
+                id: 5,
+                lessonId: 2, // Verbs
+                type: "ASSIST",
+                order: 2,
+                question: '"the man"',
+            },
+            {
+                id: 6,
+                lessonId: 2, // Verbs
+                type: "SELECT",
+                order: 3,
+                question: 'Which one of these is the "the robot"?',
+            },
         ]);
 
         // CHALLENGE OPTIONS

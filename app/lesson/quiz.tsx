@@ -1,6 +1,10 @@
 "use client"
 
+import Image from "next/image";
 import { toast } from "sonner";
+import Confetti from "react-confetti";
+import { useAudio, useWindowSize } from "react-use";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { challengeOptions, challenges } from "@/db/schema"
@@ -11,6 +15,7 @@ import { Header } from "./header";
 import { Footer } from "./footer";
 import { QuestionBubble } from "./question-bubble";
 import { Challenge } from "./challenge";
+import { ResultCard } from "./result-card";
 
 type Props = {
     initialLessonId: number;
@@ -30,8 +35,24 @@ export const Quiz = ({
     initialLessonChallenges,
     userSubscription
 }: Props) => {
+    const { width, height } = useWindowSize();
+
+    const router = useRouter();
+
+    const [finishAudio] = useAudio({ src: "/finish.wav", autoPlay: true });
+    const [
+        correctAudio,
+        _c,
+        correctControls,
+    ] = useAudio({ src: "/correct.wav" });
+    const [
+        incorrectAudio,
+        _i,
+        incorrectControls,
+    ] = useAudio({ src: "/incorrect.wav" });
     const [isPending, startTransition] = useTransition();
 
+    const [lessonId] = useState(initialLessonId);
     const [hearts, setHearts] = useState(initialHearts);
     const [percentage, setPercentage] = useState(initialPercentage);
     const [challenges] = useState(initialLessonChallenges);
@@ -87,6 +108,7 @@ export const Quiz = ({
                             return;
                         }
 
+                        correctControls.play();
                         setStatus("correct");
                         setPercentage((prev) => prev + 100 / challenges.length);
 
@@ -106,6 +128,7 @@ export const Quiz = ({
                             return;
                         }
 
+                        incorrectControls.play();
                         setStatus("wrong");
 
                         if (!response?.error) {
@@ -117,12 +140,63 @@ export const Quiz = ({
         }
     };
 
+    if (!challenge) {
+        return (
+            <>
+                {finishAudio}
+                <Confetti
+                    height={height}
+                    width={width}
+                    recycle={false}
+                    numberOfPieces={500}
+                    tweenDuration={10000}
+                />
+                <div className="flex flex-col gap-y-4 lg:gap-y-8 max-w-lg mx-auto text-center items-center justify-center h-full">
+                    <Image
+                        src="/finish.svg"
+                        alt="Finish"
+                        className="hidden lg:block"
+                        height={100}
+                        width={100}
+                    />
+                    <Image
+                        src="/finish.svg"
+                        alt="Finish"
+                        className="block lg:hidden"
+                        height={50}
+                        width={50}
+                    />
+                    <h1 className="text-xl lg:text-3xl font-bold text-neutral-700">
+                        Great job <br /> You've completed the lesson.
+                    </h1>
+                    <div className="flex items-center gap-x-4 w-full">
+                        <ResultCard
+                            variant="points"
+                            value={challenges.length * 10}
+                        />
+                        <ResultCard
+                            variant="hearts"
+                            value={hearts}
+                        />
+                    </div>
+                </div>
+                <Footer
+                    lessonId={lessonId}
+                    status="completed"
+                    onCheck={() => router.push("/learn")}
+                />
+            </>
+        );
+    };
+
     const title = challenge.type === "ASSIST"
         ? "Select the correct meaning"
         : challenge.question;
 
     return (
         <>
+            {correctAudio}
+            {incorrectAudio}
             <Header
                 hearts={hearts}
                 percentage={percentage}
