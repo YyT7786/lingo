@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-import { getUserProgress, getUserSubscription } from "@/db/queries";
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { UserProgress } from "@/components/user-progress";
 import { StickyWrapper } from "@/components/sticky-wrapper";
+import { getUserProgress, getUserSubscription } from "@/db/queries";
 
 import { Items } from "./items";
 
@@ -35,6 +37,10 @@ const ShopPage = async () => {
                     points={userProgress.points}
                     hasActiveSubscription={isPro}
                 />
+                {!isPro && (
+                    <Promo />
+                )}
+                <Quests points={userProgress.points} />
             </StickyWrapper>
             <FeedWrapper>
                 <div className="w-full flex flex-col items-center">
