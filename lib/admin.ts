@@ -1,15 +1,13 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
-const adminIds = [
-    "user_2evCqCmUCBfvjAxTxBp5lv6TwMD"
-];
+const adminIds = ["user_2evCqCmUCBfvjAxTxBp5lv6TwMD"];
 
-export const isAdmin = () => {
-    const { userId } = auth();
+export const isAdmin = async () => {
+  const { userId } = await auth();
 
-    if (!userId) {
-        return false;
-    }
+  if (!userId) {
+    return false;
+  }
 
-    return adminIds.indexOf(userId) !== -1;
-}
+  return adminIds.indexOf(userId) !== -1;
+};

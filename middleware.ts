@@ -1,7 +1,12 @@
-import { authMiddleware } from "@clerk/nextjs";
-export default authMiddleware({
-    publicRoutes: ["/", "/api/webhooks/stripe"],
-});
+import { clerkMiddleware } from "@clerk/nextjs/server";
+
+export default clerkMiddleware();
+
 export const config = {
-    matcher: ["/((?!.+.[w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    // Protect all app pages except _next, static files, or public pages
+    "/((?!.*\\..*|_next|api/webhooks/stripe).*)",
+    // You can also add other protected API routes here
+    "/(api|trpc)(.*)",
+  ],
 };
